@@ -54,7 +54,9 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-
+// 引入Vuex辅助函数
+import { mapActions } from 'vuex'
+// import axios from 'axios'
 export default {
   name: 'Login',
   data() {
@@ -99,6 +101,8 @@ export default {
     }
   },
   methods: {
+    // 引入module的子模块
+    ...mapActions(['user/login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -110,20 +114,28 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
+        // console.log(valid)
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+          try {
+            this.loading = true
+            await this['user/login'](this.loginForm)
+            // this.loading = false
+            // this.$router.push('/')
+          } catch (error) {
+            this.loading = true
+          }
         }
       })
+      // axios({
+      //   url: 'http://ihrm-java.itheima.net/api/sys/login',
+      //   method: 'post',
+      //   data: this.loginForm
+      // }).then(res => {
+      //   // 成功回调
+      //   console.log(res)
+      //   this.$router.push('/')
+      // })
     }
   }
 }

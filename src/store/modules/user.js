@@ -25,7 +25,10 @@ const actions = {
   // 登录actions
   // 这里的data 参数应该是调用actions的时候传过来的
   async login(context, data) {
+    // debugger
     const res = await login(data)
+    // console.log(res)
+    // return false
     // 因为已经做了响应的拦截器处理 实际上我们不在用判断了
     // if (res.data.success) {
     // 如果接口响应成功应该吧数据调教mutations
