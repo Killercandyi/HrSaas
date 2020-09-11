@@ -2,14 +2,24 @@
 import axios from 'axios'
 // 单独引入element的提示框
 import { Message } from 'element-ui'
+// 引入 Vuex 的 store实例
+import store from '@/store'
 const service = axios.create({
   // 设置baseURL
   baseURL: process.env.VUE_APP_BASE_API,
   // 设置请求超过时间
   timeout: 5000
 }) // 创建一个axios的实例
+
 // 请求拦截器
-service.interceptors.request.use()
+service.interceptors.request.use(config => {
+  // 先判断有没有token
+  if (store.getters.token) {
+    config.headers['Authorization'] = `Bearer ${store.getters.token}`
+  }
+  return config // 返回配置
+}, error => Promise.reject(error))
+
 // 响应拦截器 有两个参数 都是函数第一个是成功的时候执行,后一个是失败的执行
 service.interceptors.response.use(response => {
   // 接收响应回来的数据
