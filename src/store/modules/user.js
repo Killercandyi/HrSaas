@@ -1,11 +1,14 @@
 // 引入设置token本地缓存的文件
 import { getToken, setToken, removeToken } from '@/utils/auth'
 // 引入封装的登录接口
-import { login } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
+
 // 共享状态
 const state = {
-  token: getToken() // token的共享状态
+  token: getToken(), // token的共享状态
+  userInfo: {} // 用户数据的共享
 }
+
 // 修改共享状态(同步代码)
 const mutations = {
   // 设置用户的 token 值
@@ -18,8 +21,17 @@ const mutations = {
   removeToken(state) {
     state.token = null // 现将token的值设置为空
     removeToken() // 删除
+  },
+  // 修改userInfo
+  setUserInfo(state, userInfo) {
+    state.userInfo = { ...userInfo }
+  },
+  // 删除userInfo
+  removeUserInfo(state) {
+    state.userInfo = {}
   }
 }
+
 // 异步代码
 const actions = {
   // 登录actions
@@ -34,6 +46,14 @@ const actions = {
     // 如果接口响应成功应该吧数据调教mutations
     context.commit('setToken', res)
     // }
+  },
+
+  // 获取用户信息action
+  async getUserInfo(context) {
+    const res = await getUserInfo()
+    context.commit('setUserInfo', res)
+    // 返回数据,为后面埋下伏笔 一定会用到
+    return res
   }
 }
 
