@@ -10,7 +10,7 @@ import 'nprogress/nprogress.css'
 const whiteList = ['/login', '/404']
 
 // 路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   Nprogress.start() // 一进来先开启进度条
   // 再判断有没token值
   if (store.getters.token) { // 有 token值 next
@@ -18,6 +18,12 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
+      // 调用获取用户信息action (拿到token的时候同时也拿到了信息)
+      // console.log(!store.getters.userId)
+      // console.log(await store.dispatch('user/getUserInfo'))
+      if (!store.getters.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       // 其他直接放行
       next()
     }

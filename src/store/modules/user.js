@@ -1,7 +1,7 @@
 // 引入设置token本地缓存的文件
 import { getToken, setToken, removeToken } from '@/utils/auth'
 // 引入封装的登录接口
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 // 共享状态
 const state = {
@@ -51,9 +51,13 @@ const actions = {
   // 获取用户信息action
   async getUserInfo(context) {
     const res = await getUserInfo()
-    context.commit('setUserInfo', res)
+    // 为了获取用户头像
+    const baseInfo = await getUserDetailById(res.userId)
+    // 现在已经获取到了用户的基本信息
+    const baseRes = { ...res, ...baseInfo }
+    context.commit('setUserInfo', baseRes)
     // 返回数据,为后面埋下伏笔 一定会用到
-    return res
+    return baseRes
   }
 }
 

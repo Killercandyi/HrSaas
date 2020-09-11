@@ -20,6 +20,12 @@ export function getUserInfo() {
   })
 }
 
+// 获取用户基本信息(在写一个完全是为了显示头像)
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
+}
 export function logout() {
 
 }

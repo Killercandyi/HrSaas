@@ -5,13 +5,12 @@
       江苏传智播客教育科技股份有限公司
       <span class="breadBtn">体验版</span>
     </div>
-    <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="../../assets/common/bigUserHeader.png" class="user-avatar">
-          <span class="name">管理员</span>
+          <img v-iamgeError="defaultImg" :src="staffPhoto" class="user-avatar">
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -34,18 +33,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    // Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      // 默认头像
+      defaultImg: require('@/assets/common/head.jpg')
+    }
   },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'name',
+      'staffPhoto'
     ])
   },
   methods: {

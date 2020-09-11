@@ -127,15 +127,6 @@ export default {
           }
         }
       })
-      // axios({
-      //   url: 'http://ihrm-java.itheima.net/api/sys/login',
-      //   method: 'post',
-      //   data: this.loginForm
-      // }).then(res => {
-      //   // 成功回调
-      //   console.log(res)
-      //   this.$router.push('/')
-      // })
     }
   }
 }
