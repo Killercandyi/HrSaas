@@ -120,10 +120,10 @@ export default {
           try {
             this.loading = true
             await this['user/login'](this.loginForm)
-            // this.loading = false
-            // this.$router.push('/')
+            this.loading = false
+            this.$router.push('/')
           } catch (error) {
-            this.loading = true
+            this.loading = false
           }
         }
       })
