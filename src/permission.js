@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
       // 其他直接放行
       next()
     }
-    Nprogress.done()
+    Nprogress.done() // if 结束之后关闭 (强制关闭)
   } else { // 没有 token值 应该调回login
     if (whiteList.indexOf(to.path) > -1) {
       // 如果在白名单中没有token值 则直接放过
@@ -30,9 +30,11 @@ router.beforeEach((to, from, next) => {
       // 如果在白名单之外则需要跳转到登录页 登录
       next('/login')
     }
-    Nprogress.done()
+    Nprogress.done() // if 结束之后关闭 (强制关闭)
   }
 })
+// 后指守卫
 router.afterEach(() => {
+  // 前置守卫已经加载完毕了 关闭进度条
   Nprogress.done()
 })
