@@ -58,6 +58,14 @@ const actions = {
     context.commit('setUserInfo', baseRes)
     // 返回数据,为后面埋下伏笔 一定会用到
     return baseRes
+  },
+
+  // 退出登录的action
+  logout(context) {
+    // 退出登录要删除token 删除用户的信息然后重新返回登录页面
+    // 但是需要在调用的时候再返回登录页面
+    context.commit('removeToken') // 删除 token
+    context.commit('removeUserInfo') // 删除用户信息
   }
 }
 

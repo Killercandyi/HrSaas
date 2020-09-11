@@ -22,7 +22,7 @@
           <a target="_blank" href="https://github.com/mengguotang/HrSaas/">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
-          <el-dropdown-item divided @click.native="logout">
+          <el-dropdown-item divided @click.native="logOut">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -32,9 +32,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
-
+import { mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+// 引入辅助函数
+const { mapActions } = createNamespacedHelpers('user')
 export default {
   components: {
     Hamburger
@@ -53,12 +55,14 @@ export default {
     ])
   },
   methods: {
+    ...mapActions(['logout']),
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    async logOut() {
+      this.logout()
+      // 跳转回登录页
+      this.$router.push('/login')
     }
   }
 }
