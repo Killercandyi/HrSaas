@@ -6,6 +6,16 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+// 引入多个模块的路由规则
+
+import approvalsRouter from './moudles/approvals'
+import attendancesRouter from './moudles/attendances'
+import departmentsRouter from './moudles/departments'
+import employeesRouter from './moudles/employees'
+import permissionRouter from './moudles/permission'
+import salarysRouter from './moudles/salarys'
+import settingRouter from './moudles/setting'
+import socialRouter from './moudles/social'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -26,7 +36,7 @@ import Layout from '@/layout'
  */
 
 /**
- * constantRoutes
+ * constantRoutes   这个是element定义好的静态路由
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
@@ -51,7 +61,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -59,10 +69,23 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+// 定义一个动态路由
+export const asyncRouter = [
+  approvalsRouter,
+  attendancesRouter,
+  departmentsRouter,
+  employeesRouter,
+  permissionRouter,
+  salarysRouter,
+  settingRouter,
+  socialRouter
+]
+
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  // 临时把静态路由和动态路由合并在一起,
+  routes: [...constantRoutes, ...asyncRouter]
 })
 
 const router = createRouter()
