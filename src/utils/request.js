@@ -4,6 +4,12 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 // 引入 Vuex 的 store实例
 import store from '@/store'
+// 引入路由 router 实例
+import router from '@/router'
+import { getTimeStamp } from './auth'
+// 定义token失效的主动时间
+const timestampOut = 7200 // 两个小时
+
 const service = axios.create({
   // 设置baseURL
   baseURL: process.env.VUE_APP_BASE_API,
@@ -15,6 +21,12 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   // 先判断有没有token
   if (store.getters.token) {
+    // 在这里已经存在了 token 就有必要检查时间是否超市额了
+    if (checkTimeOut()) {
+      store.dispatch('user/logout')
+      router.push('login') // 返回登录页
+      return Promise.reject(new Error('登录超时，请重新登录'))
+    }
     config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
   return config // 返回配置
@@ -39,4 +51,16 @@ service.interceptors.response.use(response => {
   return Promise.reject(error)
 })
 // 导出axios实例
+
+// 检查token超时的函数
+const checkTimeOut = function() {
+  // 先获取现在的时间
+  const currentTime = new Date().getTime()
+  // 获取存入缓存中的时间戳
+  const timeStamp = getTimeStamp() ? getTimeStamp() : 0
+
+  // 返回
+  return (currentTime - timeStamp) / 1000 > timestampOut
+}
+
 export default service

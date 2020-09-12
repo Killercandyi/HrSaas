@@ -1,5 +1,5 @@
 // 引入设置token本地缓存的文件
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 // 引入封装的登录接口
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
@@ -46,6 +46,9 @@ const actions = {
     // 如果接口响应成功应该吧数据调教mutations
     context.commit('setToken', res)
     // }
+
+    // 写入时间戳
+    setTimeStamp()
   },
 
   // 获取用户信息action
