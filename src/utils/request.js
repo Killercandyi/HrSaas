@@ -45,10 +45,16 @@ service.interceptors.response.use(response => {
     return Promise.reject(new Error(message))
   }
 }, error => {
-  // 弹出提示失败
-  Message.error(error.message)
-  // 返回reject
-  return Promise.reject(error)
+  if (error.response.data.code === 10002) {
+    store.dispatch('user/logout')
+    router.push('login') // 返回登录页
+    return Promise.reject(new Error('登录超时，请重新登录'))
+  } else {
+    // 弹出提示失败
+    Message.error(error.message)
+    // 返回reject
+    return Promise.reject(error)
+  }
 })
 // 导出axios实例
 
