@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <h3>公司设置哦</h3>
+      <h3>公司设置</h3>
     </div>
   </div>
 </template>

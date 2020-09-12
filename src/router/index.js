@@ -8,14 +8,15 @@ import Layout from '@/layout'
 
 // 引入多个模块的路由规则
 
-import approvalsRouter from './moudles/approvals'
-import attendancesRouter from './moudles/attendances'
-import departmentsRouter from './moudles/departments'
-import employeesRouter from './moudles/employees'
-import permissionRouter from './moudles/permission'
-import salarysRouter from './moudles/salarys'
-import settingRouter from './moudles/setting'
-import socialRouter from './moudles/social'
+import approvalsRouter from './modules/approvals'
+import departmentsRouter from './modules/departments'
+import employeesRouter from './modules/employees'
+import permissionRouter from './modules/permission'
+import attendancesRouter from './modules/attendances'
+import salarysRouter from './modules/salarys'
+import settingRouter from './modules/setting'
+import socialRouter from './modules/social'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -70,12 +71,12 @@ export const constantRoutes = [
 ]
 
 // 定义一个动态路由
-export const asyncRouter = [
+export const asyncRoutes = [
   approvalsRouter,
-  attendancesRouter,
   departmentsRouter,
   employeesRouter,
   permissionRouter,
+  attendancesRouter,
   salarysRouter,
   settingRouter,
   socialRouter
@@ -85,7 +86,7 @@ const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   // 临时把静态路由和动态路由合并在一起,
-  routes: [...constantRoutes, ...asyncRouter]
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()
