@@ -115,3 +115,25 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+* @description: 递归算法转化树形数据
+* @param {Array} list 需要转换的数组
+* @param {String} rootValue
+* @return:
+*/
+export function transListToTreeData(list, rootValue) {
+  var arr = []
+  list && list.forEach(itme => {
+    // 要去找当前 item 它的子级   item.id = 子级的pid
+    if (itme.pid === rootValue) {
+      arr.push(itme) // 匹配到了先放到定义的空数组中
+      const child = transListToTreeData(list, itme.id)
+      // 如果 child 存在 表示找到了子级
+      if (child.length) {
+        itme.children = child
+      }
+    }
+  })
+  return arr
+}
