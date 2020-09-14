@@ -6,7 +6,7 @@
         <!-- element 行列布局 -->
         <tree-tools :tree-node="company" :is-root="true" />
         <el-tree :data="departs" :props="defaultProps" default-expand-all>
-          <tree-tools slot-scope="{ data }" :tree-node="data" />
+          <tree-tools slot-scope="{ data }" :tree-node="data" @removeDepts="getDepartments" />
         </el-tree>
       </el-card>
     </div>
