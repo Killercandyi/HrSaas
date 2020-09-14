@@ -44,8 +44,7 @@ export default {
   methods: {
     operateDepts(type) {
       if (type === 'add') {
-        console.log(333)
-
+        this.$emit('addDepts', this.treeNode)
         // 添加部门
       } else if (type === 'edit') {
         console.log(222)
