@@ -10,7 +10,7 @@
           <tree-tools slot-scope="{ data }" :tree-node="data" @removeDepts="getDepartments" @addDepts="addDepts" />
         </el-tree>
       </el-card>
-      <addDept :show-dialog="showDialog" />
+      <addDept :show-dialog="showDialog" :tree-node="node" />
     </div>
   </div>
 </template>
@@ -42,12 +42,13 @@ export default {
   methods: {
     async getDepartments() {
       const res = await getDepartments() // 调用 api 接口
-      this.company = { name: res.companyName, manager: '负责人' }
+      this.company = { name: res.companyName, manager: '负责人', id: '' }
       this.departs = transListToTreeData(res.depts, '')
     },
     addDepts(node) {
       this.showDialog = true
       this.node = node
+      console.log(node)
     }
   }
 }

@@ -77,8 +77,8 @@ export const constantRoutes = [
 // 定义一个动态路由
 export const asyncRoutes = [
   departmentsRouter,
-  employeesRouter,
   settingRouter,
+  employeesRouter,
   approvalsRouter,
   permissionRouter,
   attendancesRouter,
