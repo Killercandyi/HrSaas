@@ -8,6 +8,8 @@ const getters = {
   // 导出用户信息id
   userId: state => state.user.userInfo.userId,
   // 建立用户头像的映射
-  staffPhoto: state => state.user.userInfo.staffPhoto
+  staffPhoto: state => state.user.userInfo.staffPhoto,
+  // 建立用于 user 模块中companyId的快捷访问
+  companyId: state => state.user.userInfo.companyId
 }
 export default getters

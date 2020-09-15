@@ -14,11 +14,35 @@
                 >新增角色</el-button>
               </el-row>
               <!-- 展示数据表格 -->
-              <el-table border="">
-                <el-table-column label="序号" width="120" />
-                <el-table-column label="角色名称" width="120" />
-                <el-table-column label="描述" />
-                <el-table-column label="操作">
+              <el-table
+                v-loading="loading"
+                :data="list"
+                border=""
+              >
+                <el-table-column
+                  header-align="center"
+                  align="center"
+                  label="序号"
+                  width="120"
+                  type="index"
+                />
+                <el-table-column
+                  header-align="center"
+                  align="center"
+                  prop="name"
+                  label="角色名称"
+                  width="120"
+                />
+                <el-table-column
+                  label="描述"
+                  header-align="center"
+                  prop="description"
+                />
+                <el-table-column
+                  label="操作"
+                  header-align="center"
+                  align="center"
+                >
                   <el-button
                     size="small"
                     type="success"
@@ -36,7 +60,13 @@
             </el-row>
             <!-- 分页组件 -->
             <el-row type="flex" justify="center">
-              <el-pagination layout="prev,pager,next" />
+              <el-pagination
+                layout="prev,pager,next"
+                :total="page.total"
+                :page-size="page.pagesize"
+                :current-page="page.page"
+                @current-change="changePage"
+              />
             </el-row>
           </el-tab-pane>
           <!-- 公司信息 -->
@@ -52,16 +82,17 @@
               style="margin-top: 20px"
             >
               <el-form-item label="公司名称">
-                <el-input disabled style="width:400px" />
+                <el-input v-model="formData.name" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input disabled style="width:400px" />
+                <el-input v-model="formData.companyAddress" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input disabled style="width:400px" />
+                <el-input v-model="formData.mailbox" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="备注">
                 <el-input
+                  v-model="formData.remarks"
                   type="textarea"
                   :rows="3"
                   disabled
@@ -77,8 +108,47 @@
 </template>
 
 <script>
+import { getRoleList, getCompanyInfo } from '@/api/setting'
+import { mapGetters } from 'vuex'
 export default {
-
+  data() {
+    return {
+      loading: false, // loading 加载 默认不显示
+      list: [], // 角色数据
+      page: {
+        // 分页数据
+        page: 1,
+        pagesize: 3,
+        total: 0 // 总条数
+      },
+      formData: {}
+    }
+  },
+  computed: {
+    ...mapGetters(['companyId'])
+  },
+  created() {
+    this.getRoleList()
+    this.getCompanyInfo()
+    console.log(this.companyId)
+  },
+  methods: {
+    async getRoleList() {
+      // 获取数据前 loading 加载
+      this.loading = true
+      const { total, rows } = await getRoleList(this.page)
+      this.page.total = total
+      this.list = rows
+      this.loading = false
+    },
+    async getCompanyInfo() {
+      this.formData = await getCompanyInfo(this.companyId)
+    },
+    changePage(newPage) {
+      this.page.page = newPage
+      this.getRoleList()
+    }
+  }
 }
 </script>
 
