@@ -7,10 +7,10 @@
         <tree-tools :tree-node="company" :is-root="true" @addDepts="addDepts" />
         <el-tree :data="departs" :props="defaultProps" default-expand-all>
           <!-- 主体 -->
-          <tree-tools slot-scope="{ data }" :tree-node="data" @removeDepts="getDepartments" @addDepts="addDepts" />
+          <tree-tools slot-scope="{ data }" :tree-node="data" @removeDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" />
         </el-tree>
       </el-card>
-      <addDept :show-dialog.sync="showDialog" :tree-node="node" @anewInit="getDepartments" />
+      <addDept ref="getDeptDetails" :show-dialog.sync="showDialog" :tree-node="node" @anewInit="getDepartments" />
     </div>
   </div>
 </template>
@@ -48,6 +48,12 @@ export default {
     addDepts(node) {
       this.showDialog = true
       this.node = node
+    },
+    editDepts(node) {
+      this.showDialog = true // 显示新增 / 编辑 组件
+      this.node = node // 存储子组件传递数据
+      // 父组件 调用子组件的方法
+      this.$refs.getDeptDetails.getDepartDetail(node.id)
     }
   }
 }

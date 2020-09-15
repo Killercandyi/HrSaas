@@ -44,11 +44,11 @@ export default {
   methods: {
     operateDepts(type) {
       if (type === 'add') {
-        this.$emit('addDepts', this.treeNode)
         // 添加部门
+        this.$emit('addDepts', this.treeNode)
       } else if (type === 'edit') {
-        console.log(222)
         // 编辑部门
+        this.$emit('editDepts', this.treeNode)
       } else if (type === 'remove') {
         // 删除部门
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {

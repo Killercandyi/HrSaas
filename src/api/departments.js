@@ -35,3 +35,27 @@ export function addDepartments(data) {
     data
   })
 }
+
+/**
+* @description: 获取部门详情
+* @param {Number}  id 根据 id 获取详情
+* @return:
+*/
+export function getDepartDetail(id) {
+  return request({
+    url: `/company/department/${id}`
+  })
+}
+
+/**
+* @description: 编辑部门
+* @param {Object} data 部门详情对象
+* @return:
+*/
+export function updataDepartments(data) {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'put',
+    data
+  })
+}
