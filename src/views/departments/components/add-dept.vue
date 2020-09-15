@@ -1,7 +1,7 @@
 <template>
   <!-- 新增部门的弹窗 -->
-  <el-dialog title="新增部门" :visible="showDialog">
-    <el-form label-width="120px" :model="formData" :rules="rules">
+  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
+    <el-form ref="deptForm" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formData.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
@@ -20,14 +20,14 @@
     <el-row slot="footer" type="flex" justify="center">
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOK">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="btnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments, addDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
   props: {
@@ -46,7 +46,6 @@ export default {
       // 先获取最新的组合结构数据,以便不会出错 以最新的数据为准
       const { depts } = await getDepartments()
       // depts 是获取到所有部门的数据,但是我们不需要全部的数据
-      console.log(this)
       const isRepeat = depts.filter(item => item.pid === this.treeNode.id).some(item => item.name === value)
       // 得出结果 callback
       isRepeat ? callback(new Error(`当前部门中已经存在${value}的部门了`)) : callback()
@@ -77,7 +76,7 @@ export default {
 
         manager: [{ required: true, message: '部门负责人不能为空', trigger: 'blur' }],
 
-        introduce: [{ required: true, message: '部门介绍不能为空', trigger: 'blur' }, { min: 1, max: 5, message: '部门介绍要求输入1-300个字符' }]
+        introduce: [{ required: true, message: '部门介绍不能为空', trigger: 'blur' }, { min: 1, max: 300, message: '部门介绍要求输入1-300个字符' }]
       }
     }
   },
@@ -87,8 +86,26 @@ export default {
       this.peoples = await getEmployeeSimple()
     },
     btnOK() {
-      console.log(this.treeNode)
-      console.log(this.showDialog)
+      this.$refs.deptForm.validate(async isOK => {
+        if (isOK) {
+          await addDepartments({ ...this.formData, pid: this.treeNode.id })
+          this.$emit('anewInit') // 通知父组件更新数据
+          this.$emit('update:showDialog', false) // 关闭操作
+        }
+      })
+    },
+    btnCancel() {
+      // 将数据还原(清空input)
+      this.formData = {
+        name: '', // 部门名称
+        code: '', // 部门编码
+        manager: '', // 部门管理员
+        introduce: '' // 部门介绍
+      }
+      // 重置校验
+      this.$refs.deptForm.resetFields()
+      // 关闭操作
+      this.$emit('update:showDialog', false)
     }
   }
 }

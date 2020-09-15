@@ -10,7 +10,7 @@
           <tree-tools slot-scope="{ data }" :tree-node="data" @removeDepts="getDepartments" @addDepts="addDepts" />
         </el-tree>
       </el-card>
-      <addDept :show-dialog="showDialog" :tree-node="node" />
+      <addDept :show-dialog.sync="showDialog" :tree-node="node" @anewInit="getDepartments" />
     </div>
   </div>
 </template>
@@ -48,7 +48,6 @@ export default {
     addDepts(node) {
       this.showDialog = true
       this.node = node
-      console.log(node)
     }
   }
 }
