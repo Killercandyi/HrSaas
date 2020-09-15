@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div v-loading="loading" class="dashboard-container">
     <div class="app-container">
       <!-- 卡片组件  页面基本布局 -->
       <el-card class="tree-card">
@@ -33,7 +33,8 @@ export default {
       departs: [],
       company: {},
       showDialog: false, // 显示新增窗体
-      node: null
+      node: null,
+      loading: false
     }
   },
   created() {
@@ -41,9 +42,11 @@ export default {
   },
   methods: {
     async getDepartments() {
+      this.loading = true // 获取数据之前显示loading
       const res = await getDepartments() // 调用 api 接口
       this.company = { name: res.companyName, manager: '负责人', id: '' }
       this.departs = transListToTreeData(res.depts, '')
+      this.loading = false // 结束之后关闭
     },
     addDepts(node) {
       this.showDialog = true
