@@ -7,7 +7,7 @@
           <el-tab-pane label="角色管理">
             <el-row class="padding-el-row">
               <el-row>
-                <el-button type="primary" size="small" icon="el-icon-plus">新增角色</el-button>
+                <el-button type="primary" size="small" icon="el-icon-plus" @click="showDialog = true">新增角色</el-button>
               </el-row>
               <!-- 展示数据表格 -->
               <el-table v-loading="loading" :data="list" border>
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, removeRole, updataRole, getRoleDetails } from '@/api/setting'
+import { getRoleList, getCompanyInfo, removeRole, updataRole, getRoleDetails, addRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -191,6 +191,7 @@ export default {
             await updataRole(this.roleForm)
           } else {
             // 新增
+            await addRole(this.roleForm)
           }
           this.showDialog = false // 隐藏弹窗
           this.getRoleList() // 重新获取数据
