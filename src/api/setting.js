@@ -36,3 +36,28 @@ export function removeRole(id) {
     method: 'DELETE'
   })
 }
+
+/**
+* @description: 更新角色
+* @param {Object} data 角色详情对象
+* @param {Number} id
+* @return:request 对象
+*/
+export function updataRole(data) {
+  return request({
+    url: `/sys/role/${data.id}`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+* @description: 获取角色详情
+* @param {Number} id
+* @return: request 对象
+*/
+export function getRoleDetails(id) {
+  return request({
+    url: `/sys/role/${id}`
+  })
+}

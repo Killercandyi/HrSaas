@@ -35,6 +35,7 @@
                     <el-button
                       size="small"
                       type="primary"
+                      @click="editRole(row.id)"
                     >编辑</el-button>
                     <el-button
                       size="small"
@@ -64,8 +65,8 @@
               show-icon
               :closable="false"
             />
-            <el-form label-width="100px" style="margin-top: 20px">
-              <el-form-item label="公司名称">
+            <el-form ref="formData" :model="roleForm" :rules="rules" label-width="100px" style="margin-top: 20px">
+              <el-form-item label="公司名称" prop="name">
                 <el-input v-model="formData.name" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="公司地址">
@@ -88,11 +89,32 @@
         </el-tabs>
       </el-card>
     </div>
+    <!-- 放置一个弹层组件  编辑 新增 -->
+    <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
+      <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
+        <el-form-item label="角色名称" prop="name">
+          <el-input
+            v-model="roleForm.name"
+            style="width: 600px"
+          />
+        </el-form-item>
+        <el-form-item label="角色描述">
+          <el-input v-model="roleForm.description" style="width: 600px" />
+        </el-form-item>
+      </el-form>
+      <!-- 底部 -->
+      <el-row slot="footer" type="flex" justify="center">
+        <el-col :span="4">
+          <el-button size="small" @click="btnCancel">取消</el-button>
+          <el-button size="small" type="primary" @click="btnOK">确定</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, removeRole } from '@/api/setting'
+import { getRoleList, getCompanyInfo, removeRole, updataRole, getRoleDetails } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -105,7 +127,12 @@ export default {
         pagesize: 3,
         total: 0 // 总条数
       },
-      formData: {}
+      formData: {},
+      roleForm: {},
+      showDialog: false,
+      rules: {
+        name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
+      }
     }
   },
   computed: {
@@ -114,7 +141,6 @@ export default {
   created() {
     this.getRoleList()
     this.getCompanyInfo()
-    console.log(this.companyId)
   },
   methods: {
     async getRoleList() {
@@ -151,6 +177,30 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    async editRole(id) {
+      this.showDialog = true
+      this.roleForm = await getRoleDetails(id)
+    },
+    btnOK() {
+      this.$refs.roleForm.validate(async isOK => {
+        if (isOK) {
+          // 编辑弹框要兼容新增  判断formData有没有id可以判断时编辑或新增
+          if (this.formData.id) {
+            // 编辑
+            await updataRole(this.roleForm)
+          } else {
+            // 新增
+          }
+          this.showDialog = false // 隐藏弹窗
+          this.getRoleList() // 重新获取数据
+        }
+      })
+    },
+    btnCancel() {
+      this.roleForm = {} // 清空数据重置 input
+      this.$refs.roleForm.resetFields() // 重置form表单校验
+      this.showDialog = false // 点击取消隐藏弹窗
     }
   }
 }
