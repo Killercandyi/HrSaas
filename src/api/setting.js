@@ -24,3 +24,15 @@ export function getCompanyInfo(companyId) {
     url: `/company/${companyId}`
   })
 }
+
+/**
+* @description: 删除角色
+* @param {Number} id
+* @return: request 对象
+*/
+export function removeRole(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'DELETE'
+  })
+}

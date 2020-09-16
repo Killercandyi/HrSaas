@@ -7,18 +7,10 @@
           <el-tab-pane label="角色管理">
             <el-row class="padding-el-row">
               <el-row>
-                <el-button
-                  type="primary"
-                  size="small"
-                  icon="el-icon-plus"
-                >新增角色</el-button>
+                <el-button type="primary" size="small" icon="el-icon-plus">新增角色</el-button>
               </el-row>
               <!-- 展示数据表格 -->
-              <el-table
-                v-loading="loading"
-                :data="list"
-                border=""
-              >
+              <el-table v-loading="loading" :data="list" border>
                 <el-table-column
                   header-align="center"
                   align="center"
@@ -33,28 +25,23 @@
                   label="角色名称"
                   width="120"
                 />
-                <el-table-column
-                  label="描述"
-                  header-align="center"
-                  prop="description"
-                />
-                <el-table-column
-                  label="操作"
-                  header-align="center"
-                  align="center"
-                >
-                  <el-button
-                    size="small"
-                    type="success"
-                  >分配权限</el-button>
-                  <el-button
-                    size="small"
-                    type="primary"
-                  >编辑</el-button>
-                  <el-button
-                    size="small"
-                    type="danger"
-                  >删除</el-button>
+                <el-table-column label="描述" header-align="center" prop="description" />
+                <el-table-column label="操作" header-align="center" align="center">
+                  <template slot-scope="{ row }">
+                    <el-button
+                      size="small"
+                      type="success"
+                    >分配权限</el-button>
+                    <el-button
+                      size="small"
+                      type="primary"
+                    >编辑</el-button>
+                    <el-button
+                      size="small"
+                      type="danger"
+                      @click="removeRole(row.id)"
+                    >删除</el-button>
+                  </template>
                 </el-table-column>
               </el-table>
             </el-row>
@@ -74,13 +61,10 @@
             <el-alert
               title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
               type="info"
-              show-icon=""
+              show-icon
               :closable="false"
             />
-            <el-form
-              label-width="100px"
-              style="margin-top: 20px"
-            >
+            <el-form label-width="100px" style="margin-top: 20px">
               <el-form-item label="公司名称">
                 <el-input v-model="formData.name" disabled style="width:400px" />
               </el-form-item>
@@ -108,7 +92,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo } from '@/api/setting'
+import { getRoleList, getCompanyInfo, removeRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -147,19 +131,38 @@ export default {
     changePage(newPage) {
       this.page.page = newPage
       this.getRoleList()
+    },
+    removeRole(id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        removeRole(id)
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getRoleList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
 </style>
 
 <style>
 /* 修改 element-ui 部分样式 */
 
-  .el-tabs__item {
+.el-tabs__item {
   font-size: 18px;
 }
 
@@ -176,8 +179,10 @@ export default {
   height: 60px;
 }
 
-.el-alert .el-alert__icon{
-  margin-left: 275px;
+.el-alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .el-form {
