@@ -77,7 +77,7 @@
             fixed="right"
             width="280"
           >
-            <template>
+            <template slot-scope="{ row }">
 
               <el-button
                 type="text"
@@ -102,6 +102,7 @@
               <el-button
                 type="text"
                 size="small"
+                @click="removeEmployee(row.id)"
               >删除</el-button>
 
             </template>
@@ -127,7 +128,7 @@
 </template>
 
 <script>
-import { getEmployeesList } from '@/api/employees'
+import { getEmployeesList, removeEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 export default {
   data() {
@@ -161,6 +162,26 @@ export default {
       const list = EmployeeEnum.hireType // 获取枚举数组
       const obj = list.find(item => item.id === cellValue)
       return obj ? obj.value : '未知' // 返回数据
+    },
+    async removeEmployee(id) {
+      try {
+        await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await removeEmployee(id) // 删除角色
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getEmployeesList() // 重新拉取数据,渲染页面
+      } catch (error) {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      }
     }
   }
 }
