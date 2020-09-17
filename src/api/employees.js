@@ -47,3 +47,16 @@ export function addEmployee(data) {
     data
   })
 }
+
+/**
+* @description: 导入员工接口
+* @param {Array} data 员工信息数组
+* @return: request 对象
+*/
+export function importEmployee(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}

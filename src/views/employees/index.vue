@@ -5,7 +5,11 @@
       <page-tools :show-before="true">
         <span slot="before">共{{ page.total }}条记录</span>
         <template slot="after">
-          <el-button size="small" type="warning">导入</el-button>
+          <el-button
+            size="small"
+            type="warning"
+            @click="$router.push('/import?type=user')"
+          >导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
           <el-button
             size="small"
@@ -31,6 +35,13 @@
             label="姓名"
             sortable=""
             prop="username"
+          />
+          <el-table-column
+            header-align="center"
+            align="center"
+            label="手机号"
+            sortable=""
+            prop="mobile"
           />
           <el-table-column
             header-align="center"
