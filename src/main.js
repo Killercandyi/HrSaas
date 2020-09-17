@@ -17,6 +17,9 @@ import '@/permission' // permission control
 
 import * as directives from '@/directives' // 引入全部的自定义指令
 
+// 引入自定义插件
+import Components from '@/components'
+
 // 全局注册自定义指令 (每一个声明的自定义指令都会被遍历注册)
 Object.keys(directives).forEach(key => Vue.directive(key, directives[key]))
 
@@ -33,6 +36,9 @@ Object.keys(directives).forEach(key => Vue.directive(key, directives[key]))
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+
+// 全局注册自定义插件
+Vue.use(Components)
 
 Vue.config.productionTip = false
 
