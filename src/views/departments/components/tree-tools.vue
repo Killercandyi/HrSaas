@@ -75,6 +75,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style >
+.user-dropdown {
+  position: absolute !important;
+  top: 38px !important;
+  left: 1304px !important;
+  z-index: 2001;
+}
 </style>
+

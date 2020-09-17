@@ -13,7 +13,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-iamgeError="defaultImg" :src="staffPhoto" class="user-avatar" />
+          <img v-iamgeError="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import Hamburger from "@/components/Hamburger";
-import { mapGetters } from "vuex";
-import { createNamespacedHelpers } from "vuex";
+import Hamburger from '@/components/Hamburger'
+import { mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 // 引入辅助函数
-const { mapActions } = createNamespacedHelpers("user");
+const { mapActions } = createNamespacedHelpers('user')
 export default {
   components: {
     Hamburger
@@ -46,24 +46,24 @@ export default {
   data() {
     return {
       // 默认头像
-      defaultImg: require("@/assets/common/head.jpg")
-    };
+      defaultImg: require('@/assets/common/head.jpg')
+    }
   },
   computed: {
-    ...mapGetters(["sidebar", "name", "staffPhoto"])
+    ...mapGetters(['sidebar', 'name', 'staffPhoto'])
   },
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions(['logout']),
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logOut() {
-      this.logout();
+      this.logout()
       // 跳转回登录页
-      this.$router.push("/login");
+      this.$router.push('/login')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -176,11 +176,3 @@ export default {
 }
 </style>
 
-<style >
-.el-dropdown-menu {
-  position: absolute !important;
-  top: 38px !important;
-  left: 1779px !important;
-  z-index: 2001;
-}
-</style>
