@@ -17,12 +17,20 @@ import '@/permission' // permission control
 
 import * as directives from '@/directives' // 引入全部的自定义指令
 
+// 引入过滤器
+import * as filters from '@/filters'
+
 // 引入自定义插件
 import Components from '@/components'
 
 // 全局注册自定义指令 (每一个声明的自定义指令都会被遍历注册)
 Object.keys(directives).forEach(key => Vue.directive(key, directives[key]))
 
+// 注册全局过滤器
+Object.keys(filters).forEach(key => {
+  // 注册过滤器
+  Vue.filter(key, filters[key])
+})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

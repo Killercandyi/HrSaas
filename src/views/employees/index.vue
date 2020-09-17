@@ -41,6 +41,7 @@
             label="聘用形式"
             sortable=""
             prop="formOfEmployment"
+            :formatter="formatEmployment"
           />
           <el-table-column
             header-align="center"
@@ -55,14 +56,20 @@
             label="入职时间"
             sortable=""
             prop="timeOfEntry"
-          />
+          >
+            <template slot-scope="{ row }">{{ row.timeOfEntry | formatDate }}</template>
+          </el-table-column>
           <el-table-column
             header-align="center"
             align="center"
             label="账号状态"
             sortable=""
             prop="enableState"
-          />
+          >
+            <template slot-scope="{row}">
+              <el-switch :value="row.enableState === 1" />
+            </template>
+          </el-table-column>
           <el-table-column
             header-align="center"
             align="center"
@@ -121,6 +128,7 @@
 
 <script>
 import { getEmployeesList } from '@/api/employees'
+import EmployeeEnum from '@/api/constant/employees'
 export default {
   data() {
     return {
@@ -147,6 +155,12 @@ export default {
       this.page.total = total // 赋值总条数
       this.list = rows // 所有的列表数据
       this.loading = false // 隐藏
+    },
+    // 格式化聘用形式
+    formatEmployment(rew, column, cellValue, index) {
+      const list = EmployeeEnum.hireType // 获取枚举数组
+      const obj = list.find(item => item.id === cellValue)
+      return obj ? obj.value : '未知' // 返回数据
     }
   }
 }
