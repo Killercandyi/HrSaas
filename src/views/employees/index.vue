@@ -7,7 +7,11 @@
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            @click="showDialog = true"
+          >新增员工</el-button>
         </template>
       </page-tools>
       <!-- 主体表格分页 -->
@@ -124,13 +128,18 @@
         </el-row>
       </el-card>
     </div>
+    <add-employee :show-dialog.sync="showDialog" />
   </div>
 </template>
 
 <script>
 import { getEmployeesList, removeEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
+import AddEmployee from './components/add-employee'
 export default {
+  components: {
+    AddEmployee
+  },
   data() {
     return {
       loading: false,
@@ -139,7 +148,8 @@ export default {
         page: 1,
         size: 10,
         total: 0
-      }
+      },
+      showDialog: false // 控制新增的弹窗
     }
   },
   created() {
