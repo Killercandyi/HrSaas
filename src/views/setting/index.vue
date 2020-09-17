@@ -7,7 +7,7 @@
           <el-tab-pane label="角色管理">
             <el-row class="padding-el-row">
               <el-row>
-                <el-button type="primary" size="small" icon="el-icon-plus" @click="showDialog = true">新增角色</el-button>
+                <el-button type="primary" size="small" icon="el-icon-plus" @click="addRole">新增角色</el-button>
               </el-row>
               <!-- 展示数据表格 -->
               <el-table v-loading="loading" :data="list" border>
@@ -139,10 +139,11 @@ export default {
     ...mapGetters(['companyId'])
   },
   created() {
-    this.getRoleList()
-    this.getCompanyInfo()
+    this.getRoleList() // 渲染角色数据
+    this.getCompanyInfo() // 渲染公司数据
   },
   methods: {
+    // 获取角色数据
     async getRoleList() {
       // 获取数据前 loading 加载
       this.loading = true
@@ -151,13 +152,16 @@ export default {
       this.list = rows
       this.loading = false
     },
+    // 获取公司信息
     async getCompanyInfo() {
       this.formData = await getCompanyInfo(this.companyId)
     },
+    // 点击页签数据动态变化
     changePage(newPage) {
       this.page.page = newPage
       this.getRoleList()
     },
+    // 删除角色
     removeRole(id) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -170,7 +174,7 @@ export default {
           type: 'success',
           message: '删除成功!'
         })
-        this.getRoleList()
+        this.getRoleList() // 渲染角色数据
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -178,15 +182,18 @@ export default {
         })
       })
     },
+    // 编辑角色
     async editRole(id) {
+      console.log(this.formData.id)
       this.showDialog = true
       this.roleForm = await getRoleDetails(id)
     },
+    // 点击确定提交编辑和新增
     btnOK() {
       this.$refs.roleForm.validate(async isOK => {
         if (isOK) {
           // 编辑弹框要兼容新增  判断formData有没有id可以判断时编辑或新增
-          if (this.formData.id) {
+          if (this.roleForm.id) {
             // 编辑
             await updataRole(this.roleForm)
           } else {
@@ -198,10 +205,16 @@ export default {
         }
       })
     },
+    // 取消按钮
     btnCancel() {
       this.roleForm = {} // 清空数据重置 input
       this.$refs.roleForm.resetFields() // 重置form表单校验
       this.showDialog = false // 点击取消隐藏弹窗
+    },
+    // 新增角色
+    addRole() {
+      console.log(this.formData.id)
+      this.showDialog = true
     }
   }
 }

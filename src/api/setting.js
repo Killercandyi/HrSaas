@@ -68,6 +68,7 @@ export function getRoleDetails(id) {
 * @return: request 对象
 */
 export function addRole(data) {
+  console.log(data)
   return request({
     url: '/sys/role',
     method: 'post',
