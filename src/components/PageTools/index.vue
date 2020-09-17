@@ -32,6 +32,7 @@ export default {
     margin: 10px 0;
     .before {
         line-height: 34px;
+        font-size: 12px;
     i {
       margin-right: 5px;
       color: #409eff;
