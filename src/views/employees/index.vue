@@ -10,7 +10,11 @@
             type="warning"
             @click="$router.push('/import?type=user')"
           >导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="exportExcelData"
+          >导出</el-button>
           <el-button
             size="small"
             type="primary"
@@ -97,6 +101,7 @@
               <el-button
                 type="text"
                 size="small"
+                @click="xixixixi(row.id)"
               >查看</el-button>
               <el-button
                 type="text"
@@ -147,6 +152,7 @@
 import { getEmployeesList, removeEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee'
+import { formatDate } from '@/filters'
 export default {
   components: {
     AddEmployee
@@ -203,6 +209,60 @@ export default {
           message: '已取消删除'
         })
       }
+    },
+    exportExcelData() {
+      // 表头的对应关系
+      const headers = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职如期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+
+      // 使用懒加载
+      import('@/vendor/Export2Excel').then(async excel => {
+        const { rows } = await getEmployeesList({ page: 1, size: this.page.total })
+        const data = this.formatJson(headers, rows)
+
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data,
+          filename: '员工信息表',
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+        // excel.export_json_to_excel({
+        //   header: Object.keys(headers),
+        //   data,
+        //   filename: '员工信息表',
+        //   autoWidth: true,
+        //   bookType: 'xlsx'
+
+        // })
+      })
+    },
+    formatJson(headers, rows) {
+      // 首先要遍历数组
+      return rows.map(item => {
+        return Object.keys(headers).map(key => {
+          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+            // 返回格式化之前的时间
+            return formatDate(item[headers[key]])
+          } else if (headers[key] === 'formOfEmployment') {
+            var en = EmployeeEnum.hireType.find(obj => obj.id === item[headers[key]])
+            return en ? en.value : '未知'
+          }
+          return item[headers[key]]
+        })
+      })
+    },
+    xixixixi(id) {
+      console.log(111)
+      console.log(id)
+      this.$router.push(`/employees/detail/${id}`)
     }
   }
 }
