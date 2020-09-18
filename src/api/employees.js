@@ -54,6 +54,7 @@ export function addEmployee(data) {
 * @return: request 对象
 */
 export function importEmployee(data) {
+  console.log(data)
   return request({
     url: '/sys/user/batch',
     method: 'post',

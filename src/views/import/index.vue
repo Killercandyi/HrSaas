@@ -19,7 +19,7 @@ export default {
           '手机号': 'mobile',
           '姓名': 'username',
           '转正日期': 'correctionTime',
-          '工号': 'wordNumber'
+          '工号': 'workNumber'
         }
         const arr = []
         // 遍历所有返回的数据

@@ -36,7 +36,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
   // 接收响应回来的数据
   const { success, data, message } = response.data
-  if (success) { // 如果响应回来的success为true 就可以将datareturn
+  if (success) { // 如果响应回来的success为true 就可以将data return
     return data
   } else {
     // 错误就提示错误的信息
