@@ -44,9 +44,11 @@
           </el-tab-pane>
           <el-tab-pane label="个人详情">
             <!-- 放置个人详情 -->
+            <component :is="userComponent" />
           </el-tab-pane>
           <el-tab-pane label="岗位详情">
             <!-- 岗位详情 -->
+            <component :is="JobComponent" />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -57,7 +59,13 @@
 <script>
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetaiById } from '@/api/employees'
+import UserInfo from './components/user-info'
+import JobInfo from './components/job-info'
 export default {
+  components: {
+    UserInfo,
+    JobInfo
+  },
   data() {
     var validatecheckpass = (rule, value, callback) => {
       if (value !== this.userInfo.password2) {
@@ -67,6 +75,8 @@ export default {
       }
     }
     return {
+      userComponent: 'UserInfo',
+      JobComponent: 'JobInfo',
       userId: this.$route.params.id, // 提前定义id
       userInfo: {
         username: '',
