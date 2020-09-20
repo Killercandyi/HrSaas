@@ -234,14 +234,6 @@ export default {
           autoWidth: true,
           bookType: 'xlsx'
         })
-        // excel.export_json_to_excel({
-        //   header: Object.keys(headers),
-        //   data,
-        //   filename: '员工信息表',
-        //   autoWidth: true,
-        //   bookType: 'xlsx'
-
-        // })
       })
     },
     formatJson(headers, rows) {

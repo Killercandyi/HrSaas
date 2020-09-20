@@ -17,7 +17,7 @@ export default {
   {
     path: 'detail/:id',
     hidden: true,
-    comments: () => import('../../views/employees/detail.vue'),
+    component: () => import('../../views/employees/detail.vue'),
     meta: {
       title: '员工详情'
     }
