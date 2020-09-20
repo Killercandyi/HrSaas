@@ -74,3 +74,51 @@ export function saveUserDetaiById(data) {
     data
   })
 }
+
+/**
+* @description: 获取员工个人信息
+* @param {Number} id 用户id
+* @return: request 对象
+*/
+export function getPersonalInfo(id) {
+  return request({
+    url: `/employees/${id}/personalInfo`
+  })
+}
+
+/**
+* @description: 更新员工个人信息
+* @param {Object} data 员工信息对象
+* @return: request 对象
+*/
+export function updatapersonalInfo(data) {
+  return request({
+    url: `/employees/${data.userId}/personalInfo`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+* @description: 获取员工岗位信息
+* @param {Number} id 用户id
+* @return: request 对象
+*/
+export function getJobsInfo(id) {
+  return request({
+    url: `/employees/${id}/jobs`
+  })
+}
+
+/**
+* @description: 更新员工岗位信息
+* @param {Object} data 岗位信息对象
+* @return: request 对象
+*/
+export function updataJobs(data) {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'put',
+    data
+  })
+}

@@ -10,7 +10,7 @@
               :model="userInfo"
               :rules="rules"
               label-width="120px"
-              style="margin-left: 360px; margin-top: 20px;"
+              style="margin-left: 340px; margin-top: 20px;"
             >
               <el-form-item label="姓名" prop="username">
                 <el-input

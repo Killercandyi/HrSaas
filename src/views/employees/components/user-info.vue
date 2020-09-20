@@ -282,6 +282,8 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
+import { getPersonalInfo, updatapersonalInfo, saveUserDetaiById } from '@/api/employees'
+import { getUserDetailById } from '@/api/user'
 export default {
   data() {
     return {
@@ -351,6 +353,39 @@ export default {
         proofOfDepartureOfFormerCompany: '', // 前公司离职证明
         remarks: '' // 备注
       }
+    }
+  },
+  created() {
+    this.getUserDetailById()
+    this.getPersonalInfo()
+    console.log(this.formData)
+  },
+  methods: {
+    // 获取上半区的内容
+    async getUserDetailById() {
+      this.userInfo = await getUserDetailById(this.userId)
+    },
+    // 获取下半区内容
+    async getPersonalInfo() {
+      this.formData = await getPersonalInfo(this.userId)
+    },
+    // 上半区保存更新
+    async saveUser() {
+      await saveUserDetaiById(this.userInfo)
+      this.$message({
+        type: 'success',
+        message: '保存基本信息成功'
+      })
+      this.getUserDetailById()
+    },
+    // 下半区保存更新
+    async savePersonal() {
+      await updatapersonalInfo(this.formData)
+      this.$message({
+        type: 'success',
+        message: '保存基础信息成功'
+      })
+      this.getPersonalInfo()
     }
   }
 }
