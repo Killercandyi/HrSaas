@@ -61,3 +61,16 @@ export function importEmployee(data) {
     data
   })
 }
+
+/**
+* @description: 保存员工的基本信息
+* @param {Object} data 修改的信息对象
+* @return: request 对象
+*/
+export function saveUserDetaiById(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}

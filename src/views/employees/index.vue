@@ -252,8 +252,6 @@ export default {
       })
     },
     xixixixi(id) {
-      console.log(111)
-      console.log(id)
       this.$router.push(`/employees/detail/${id}`)
     }
   }
