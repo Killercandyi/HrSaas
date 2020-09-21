@@ -118,6 +118,7 @@
               <el-button
                 type="text"
                 size="small"
+                @click="editRole(row.id)"
               >角色</el-button>
               <el-button
                 type="text"
@@ -145,6 +146,12 @@
       </el-card>
     </div>
     <add-employee :show-dialog.sync="showDialog" />
+    <!-- 分配角色弹窗 -->
+    <assign-role
+      ref="assignRole"
+      :show-role-dialog.sync="showRoleDialog"
+      :user-id="userId"
+    />
   </div>
 </template>
 
@@ -152,10 +159,12 @@
 import { getEmployeesList, removeEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee'
+import AssignRole from './components/assign-role'
 import { formatDate } from '@/filters'
 export default {
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data() {
     return {
@@ -166,7 +175,9 @@ export default {
         size: 10,
         total: 0
       },
-      showDialog: false // 控制新增的弹窗
+      showDialog: false, // 控制新增的弹窗
+      showRoleDialog: false, // 角色弹窗
+      userId: null
     }
   },
   created() {
@@ -253,6 +264,11 @@ export default {
     },
     xixixixi(id) {
       this.$router.push(`/employees/detail/${id}`)
+    },
+    async editRole(id) {
+      this.userId = id // props的传值是异步
+      await this.$refs.assignRole.getUserDetailById(id)
+      this.showRoleDialog = true
     }
   }
 }

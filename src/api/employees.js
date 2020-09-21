@@ -122,3 +122,16 @@ export function updataJobs(data) {
     data
   })
 }
+
+/**
+* @description: 分配角色
+* @param {Object} data 角色信息对象
+* @return: request 对象
+*/
+export function assignRoles(data) {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'put',
+    data
+  })
+}
