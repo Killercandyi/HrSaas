@@ -75,3 +75,16 @@ export function addRole(data) {
     data
   })
 }
+
+/**
+* @description: 给角色分配权限
+* @param {Object} data 权限信息对象
+* @return: request 对象
+*/
+export function assignPerm(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
+  })
+}

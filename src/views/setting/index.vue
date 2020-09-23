@@ -31,6 +31,7 @@
                     <el-button
                       size="small"
                       type="success"
+                      @click="assignPerm(row.id)"
                     >分配权限</el-button>
                     <el-button
                       size="small"
@@ -110,13 +111,26 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <!-- 分配权限弹出层 -->
+    <permission
+      ref="permission"
+      :role-id="roleId"
+      :perm-data="permData"
+      :show-perm-dialog.sync="showPermDialog"
+    />
   </div>
 </template>
 
 <script>
+import Permission from './components/Permission'
 import { getRoleList, getCompanyInfo, removeRole, updataRole, getRoleDetails, addRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
+import { transListToTreeData } from '@/utils'
+import { getPermissionList } from '@/api/permission'
 export default {
+  components: {
+    Permission
+  },
   data() {
     return {
       loading: false, // loading 加载 默认不显示
@@ -132,7 +146,10 @@ export default {
       showDialog: false,
       rules: {
         name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
-      }
+      },
+      showPermDialog: false, // 权限弹出层
+      permData: [],
+      roleId: null
     }
   },
   computed: {
@@ -215,6 +232,17 @@ export default {
     addRole() {
       console.log(this.formData.id)
       this.showDialog = true
+    },
+    async getPermissionList() { // 获取树形数据
+      this.permData = transListToTreeData(await getPermissionList({ enVisible: '1' }), '0')
+    },
+    // 点击分配权限
+    async assignPerm(id) {
+      this.roleId = id // 记录点击的角色id
+      this.getPermissionList() // 获取所有的权限数据
+      const { permIds } = await getRoleDetails(id) // permIds就是角色所拥有的权限的点
+      this.$refs.permission.selectCheck = permIds
+      this.showPermDialog = true // 显示弹窗
     }
   }
 }
