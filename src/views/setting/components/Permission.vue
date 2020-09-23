@@ -13,6 +13,7 @@
       show-checkbox=""
       node-key="id"
       :default-checked-keys="selectCheck"
+      :check-strictly="true"
     />
     <el-row slot="footer" type="flex" justify="center">
       <el-col>
