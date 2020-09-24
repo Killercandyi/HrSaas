@@ -22,10 +22,17 @@ router.beforeEach(async(to, from, next) => {
       // console.log(!store.getters.userId)
       // console.log(await store.dispatch('user/getUserInfo'))
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+
+        router.addRoutes(routes)
+
+        next(to.path)
+      } else {
+        // 其他直接放行
+        next()
       }
-      // 其他直接放行
-      next()
     }
     Nprogress.done() // if 结束之后关闭 (强制关闭)
   } else { // 没有 token值 应该调回login
