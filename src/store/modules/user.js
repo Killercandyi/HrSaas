@@ -3,6 +3,8 @@ import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 // 引入封装的登录接口
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
+import { resetRouter } from '@/router'
+
 // 共享状态
 const state = {
   token: getToken(), // token的共享状态
@@ -69,6 +71,11 @@ const actions = {
     // 但是需要在调用的时候再返回登录页面
     context.commit('removeToken') // 删除 token
     context.commit('removeUserInfo') // 删除用户信息
+
+    // 退出登录时 重置路由
+    resetRouter()
+
+    context.commit('permission/setRoutes', [], { root: true })
   }
 }
 

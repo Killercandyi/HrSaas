@@ -26,7 +26,7 @@ router.beforeEach(async(to, from, next) => {
 
         const routes = await store.dispatch('permission/filterRoutes', roles.menus)
 
-        router.addRoutes(routes)
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
 
         next(to.path)
       } else {
