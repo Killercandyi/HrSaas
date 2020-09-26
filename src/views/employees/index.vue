@@ -18,6 +18,7 @@
           <el-button
             size="small"
             type="primary"
+            :disabled="!checkPermission('POINT-USER-ADD')"
             @click="showDialog = true"
           >新增员工</el-button>
         </template>
@@ -101,6 +102,7 @@
               <el-button
                 type="text"
                 size="small"
+                :disabled="!checkPermission('POINT-USER-ADD')"
                 @click="xixixixi(row.id)"
               >查看</el-button>
               <el-button
@@ -123,6 +125,7 @@
               <el-button
                 type="text"
                 size="small"
+                :disabled="!checkPermission('POINT-USER-ADD')"
                 @click="removeEmployee(row.id)"
               >删除</el-button>
 

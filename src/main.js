@@ -15,6 +15,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 引入混入对象
+import checkPermission from '@/mixin/checkPermission'
+
 import * as directives from '@/directives' // 引入全部的自定义指令
 
 // 引入过滤器
@@ -47,6 +50,9 @@ Vue.use(ElementUI, { locale })
 
 // 全局注册自定义插件
 Vue.use(Components)
+
+// 全局混入 所有的vue组件都会混入一个对象
+Vue.mixin(checkPermission)
 
 Vue.config.productionTip = false
 
