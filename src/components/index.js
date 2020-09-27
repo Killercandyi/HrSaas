@@ -3,6 +3,7 @@ import PageTools from './PageTools'
 import UploadExcel from './UploadExcel' // 导入Excel组件
 import imageUpload from './imageUpload' // 图片上传组件
 import ScreenFull from './ScreenFull'
+import ThemePicker from './ThemePicker'
 
 // 导出 注册
 export default {
@@ -11,5 +12,6 @@ export default {
     Vue.component('UploadExcel', UploadExcel)
     Vue.component('imageUpload', imageUpload)
     Vue.component('ScreenFull', ScreenFull)
+    Vue.component('ThemePicker', ThemePicker)
   }
 }
