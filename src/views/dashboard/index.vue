@@ -72,7 +72,7 @@
             <span>流程申请</span>
           </div>
           <div class="sideNav">
-            <el-button class="sideBtn">加班离职</el-button>
+            <el-button class="sideBtn" @click="showDialog = true">加班离职</el-button>
             <el-button class="sideBtn">请假调休</el-button>
             <el-button class="sideBtn">审批列表</el-button>
             <el-button class="sideBtn">我的信息</el-button>
@@ -117,12 +117,42 @@
         </el-card>
       </el-col>
     </el-row>
+    <!-- 离职弹层 -->
+    <el-dialog
+      title="离职申请"
+      :visible="showDialog"
+      @close="btnCancel"
+    >
+      <el-form ref="dimissionForm" :model="formData" :rules="rules" label-width="120px">
+        <el-form-item label="离职时间" prop="excepTime">
+          <el-date-picker v-model="formData.excepTime" />
+        </el-form-item>
+        <el-form-item label="离职原因" prop="reason">
+          <el-input
+            v-model="formData.reason"
+            type="textarea"
+            :rows="3"
+          />
+        </el-form-item>
+      </el-form>
+      <el-row slot="footer" type="flex" justify="center">
+        <el-col>
+          <el-button
+            type="primary"
+            size="small"
+            @click="btnOK"
+          >确定</el-button>
+          <el-button size="small" @click="btnCancel">取消</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import WorkCalendar from './components/work-calendar'
 import Radar from './components/radar'
+import { startProcess } from '@/api/approvals'
 import { mapGetters } from 'vuex'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('user')
@@ -133,7 +163,18 @@ export default {
   },
   data() {
     return {
-      defaultImg: require('@/assets/common/bigUserHeader.png')
+      defaultImg: require('@/assets/common/bigUserHeader.png'),
+      showDialog: false,
+      formData: {
+        exceptTime: '', // 离职时间
+        reason: '', // 离职原因
+        processKey: 'process_dimission', // 特定的审批
+        processName: '离职'
+      },
+      rules: {
+        excepTime: [{ required: true, message: '离职时间不能为空' }],
+        reason: [{ required: true, message: '离职原因不能为空' }]
+      }
     }
   },
   computed: {
@@ -141,6 +182,30 @@ export default {
       'name'
     ]),
     ...mapState(['userInfo'])
+  },
+  methods: {
+    btnOK() {
+      this.$refs.dimissionForm.validate(async validate => {
+        if (validate) {
+          await startProcess({ ...this.formData, userId: this.userInfo.userId })
+          this.$message({
+            type: 'success',
+            message: '发起流程成功'
+          })
+          this.showDialog = false
+        }
+      })
+    },
+    btnCancel() {
+      this.$refs.dimissionForm.resetFields()
+      this.formData = {
+        exceptTime: '', // 离职时间
+        reason: '', // 离职原因
+        processKey: 'process_dimission', // 特定的审批
+        processName: '离职'
+      }
+      this.showDialog = false
+    }
   }
 }
 </script>
