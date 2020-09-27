@@ -37,12 +37,12 @@
                       size="small"
                       type="primary"
                       @click="editRole(row.id)"
-                    >编辑</el-button>
+                    >{{ $t("table.edit") }}</el-button>
                     <el-button
                       size="small"
                       type="danger"
                       @click="removeRole(row.id)"
-                    >删除</el-button>
+                    >{{ $t("table.delete") }}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
