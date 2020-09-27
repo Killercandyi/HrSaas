@@ -5,6 +5,7 @@ import imageUpload from './imageUpload' // 图片上传组件
 import ScreenFull from './ScreenFull'
 import ThemePicker from './ThemePicker'
 import LangSelect from './LangSelect'
+import TagsView from './TagsView'
 
 // 导出 注册
 export default {
@@ -15,5 +16,6 @@ export default {
     Vue.component('ScreenFull', ScreenFull)
     Vue.component('ThemePicker', ThemePicker)
     Vue.component('LangSelect', LangSelect)
+    Vue.component('TagsView', TagsView)
   }
 }
